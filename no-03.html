@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Photo Gallery</title>
+  <style>
+    body {
+      font-family: 'Times New Roman', Times, serif;
+      margin-left: 7%;
+      margin-right: 6%;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
+      background-image: url('https://st4.depositphotos.com/12873196/23534/i/450/depositphotos_235349260-stock-photo-white-clouds-blue-sky-rain.jpg');
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-size: 100% 100%;
+    }
+
+    .header {
+      font-weight: bold;
+      margin-bottom: 20px;
+      border-bottom: 3px solid black;
+      padding: auto;
+      color:black;
+      width: 100%;
+      text-align: center;
+    }
+
+    .gallery-container {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .thumbnail {
+      margin: 5px;
+      cursor: pointer;
+      transition: transform 0.3s;
+      height: 250px;
+      width: 250px;
+      border-radius: 25px;
+    }
+
+    .thumbnail:hover {
+      transform: scale(1.1);
+    }
+
+    .lightbox {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      z-index: 999;
+    }
+
+    .lightbox-content {
+      display: block;
+      max-width: 90%;
+      max-height: 90%;
+      margin: 10px auto;
+      border: 5px solid #fff;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+    }
+
+    .lightbox.active {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .close-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 40px;
+      cursor: pointer;
+      color: #ff0000;
+      background: none;
+      border: none;
+    }
+
+    .close-button:hover {
+      transform: scale(1.2);
+    }
+  </style>
+</head>
+<body>
+    <div class="header"><h1>Flowers Gallery</h1></div>
+    <div class="gallery-container">
+      <img class="thumbnail" src="https://guardian.ng/wp-content/uploads/2015/02/Single-red-rose.jpg" alt="Image 1">
+      <img class="thumbnail" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Flower_July_2011-2_1_cropped.jpg/1200px-Flower_July_2011-2_1_cropped.jpg" alt="Image 2">
+      <img class="thumbnail" src="https://lh3.googleusercontent.com/G9Bu8wpt1g97QnLmLxoT3XdbwCU_Qg9qG8ns2WlWcKkTE4fBTq4XXIIWTj-lHZ-fhoLuQOI1jkkJH8d7ALrZ_40=s900" alt="Image 3">
+      <img class="thumbnail" src="https://www.fernlea.com/images/samples/blooms/osteospermum.jpg" alt="Image 4">
+      <img class="thumbnail" src="https://images.pexels.com/photos/669508/pexels-photo-669508.jpeg?cs=srgb&dl=pexels-lukas-669508.jpg&fm=jpg" alt="Image 5">
+      <img class="thumbnail" src="https://cdn.britannica.com/30/166330-050-28900AED/Water-lily-pond.jpg" alt="Image 6">
+      <img class="thumbnail" src="https://www.almanac.com/sites/default/files/styles/or/public/image_nodes/sunflower-1627193_1920.jpg?itok=td7mL8qA" alt="Image 7">
+      <img class="thumbnail" src="https://www.gardeninginsouthafrica.co.za/images/stories/garden/seedlings/marigoldaa.jpg" alt="Image 8">
+      <img class="thumbnail" src="https://nurserylive.com/cdn/shop/collections/nurserylive-multi-color-flowering-plants-category-image.jpg?v=1681381456" alt="Image 9">
+      <img class="thumbnail" src="https://www.decorhomeideas.com/wp-content/uploads/2021/05/cockscomb-flowers-with-biggest-blooms.jpg" alt="Image 10">
+      <img class="thumbnail" src="https://lh3.googleusercontent.com/7icZNa2OokpYvwXeoSupPUdUHg94QiEeTpBslONBtLfqw4FTawvr07M9sbqr97qh6Dbu5mkLiHbTBzY8BJ_rA-U=s900" alt="Image 11">
+      <img class="thumbnail" src="https://1.bp.blogspot.com/-h6jrWFUHACA/UxyvIq9UwpI/AAAAAAAAGRg/AaD5y5JWfco/s1600/plumeria-2-frangipani_flower_2-top-10-best-beautiful-spectacular-world-wallpaper-free.jpg" alt="Image 12">
+      <img class="thumbnail" src="https://images.pexels.com/photos/36764/marguerite-daisy-beautiful-beauty.jpg?cs=srgb&dl=pexels-bess-hamiti-36764.jpg&fm=jpg" alt="Image 13">
+      <img class="thumbnail" src="https://media.istockphoto.com/id/945791988/photo/kalanchoe.jpg?s=612x612&w=0&k=20&c=TvnzJGr2t_Yzdd04ByTzG2jlTaDuEGCNk78_EIZSo8w=" alt="Image 14">
+      <img class="thumbnail" src="https://cdn.pixabay.com/photo/2020/11/27/20/16/kalanchoe-5782808_1280.jpg" alt="Image 15">
+  
+    <!-- Add more thumbnail images as needed -->
+
+    <!-- Lightbox overlay -->
+    <div class="lightbox" id="lightbox">
+      <button class="close-button" onclick="closeLightbox()">&times;</button>
+      <img class="lightbox-content" id="lightbox-img" src="" alt="Full-size Image">
+    </div>
+  </div>
+
+  <script>
+    const thumbnails = document.querySelectorAll('.thumbnail');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+
+    thumbnails.forEach(thumbnail => {
+      thumbnail.addEventListener('click', () => {
+        lightboxImg.src = thumbnail.src;
+        lightbox.classList.add('active');
+      });
+    });
+
+    function closeLightbox() {
+      lightbox.classList.remove('active');
+    }
+  </script>
+</body>
+</html>
